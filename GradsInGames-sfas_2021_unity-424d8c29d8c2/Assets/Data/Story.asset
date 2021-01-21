@@ -14,21 +14,30 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _beats:
   - _choices:
-    - _text: The first choice is to go one way...
-      _beatId: 2
-    - _text: The second choice is to go the alternative way...
+    - _text: Press 1 to start your Adventure
       _beatId: 3
-    _text: "The story starts here. \nSome stuff happens and then you are faced with
-      a choice. "
+    - _text: Press 2 for Game Instructions
+      _beatId: 2
+    _text: 'Welcome to Generic Adventure Game : The Broken World'
     _id: 1
   - _choices: []
-    _text: "You choose to go the first way and this is an ok choice, the story plays
-      out. You are happy. \n\nTHE END"
+    _text: 'Most gameplay will revolve around single key inputs as instructed by
+      the game, at any point you wish to return to the main menu press esc. '
     _id: 2
-  - _choices: []
-    _text: 'The alternative choice is where you want to go, it is a fine choice.
-      The story plays out and you are happy.
-
-
-      THE END.'
+  - _choices:
+    - _text: 'Start your quest for the wifi '
+      _beatId: 4
+    - _text: 'Return to main menu '
+      _beatId: 1
+    _text: 'Hey son, i know you''ve stolen my old laptop to connect to internet since
+      i changed the wifi. Being the ever creative father that i am i have a made
+      a game in which you can find the wifi password. This game will challange you
+      and the graphics will inspire. '
     _id: 3
+  - _choices:
+    - _text: 'Start your quest for the wifi '
+      _beatId: 4
+    - _text: 'Return to main menu '
+      _beatId: 1
+    _text: $
+    _id: 4

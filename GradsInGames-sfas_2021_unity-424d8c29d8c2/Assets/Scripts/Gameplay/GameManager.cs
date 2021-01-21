@@ -1,17 +1,19 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class Game : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     [SerializeField] private StoryData _data;
 
+    public char[,] _worldMap;
     private TextDisplay _output;
     private BeatData _currentBeat;
     private WaitForSeconds _wait;
 
     private void Awake()
     {
-        _output = GetComponentInChildren<TextDisplay>();
+        CreateWorld(25);
+         _output = GetComponentInChildren<TextDisplay>();
         _currentBeat = null;
         _wait = new WaitForSeconds(0.5f);
     }
@@ -107,6 +109,26 @@ public class Game : MonoBehaviour
         if(data.Decision.Count > 0)
         {
             _output.ShowWaitingForInput();
+        }
+    }
+    //MAP CODE
+    public void CreateWorld(int WorldSize)
+    {
+        _worldMap = new char[WorldSize, WorldSize];
+
+        for (int i = 0; i < WorldSize; i++)
+        {
+            for (int j = 0; j < WorldSize; j++)
+            {
+                if (i == 0 || i == WorldSize - 1 || j == 0 || j == WorldSize - 1) // Makes border Moutains
+                {
+                    _worldMap[i, j] = 'M';
+                }
+                else
+                {
+                    _worldMap[i, j] = 'F';
+                }
+            }
         }
     }
 }
