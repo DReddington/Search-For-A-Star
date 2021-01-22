@@ -35,9 +35,29 @@ MonoBehaviour:
       and the graphics will inspire. '
     _id: 3
   - _choices:
+    - _text: North
+      _beatId: 4
+    - _text: East
+      _beatId: 4
+    - _text: South
+      _beatId: 4
+    - _text: 'West '
+      _beatId: 4
+    - _text: 'Interact '
+      _beatId: 4
+    _text: '$Use numbers to move around the map '
+    _id: 4
+  - _choices:
     - _text: 'Start your quest for the wifi '
       _beatId: 4
     - _text: 'Return to main menu '
       _beatId: 1
-    _text: $
-    _id: 4
+    _text: New Story Beat
+    _id: 5
+  - _choices:
+    - _text: 'Start your quest for the wifi '
+      _beatId: 4
+    - _text: 'Return to main menu '
+      _beatId: 1
+    _text: New Story Beat
+    _id: 6

@@ -14,12 +14,15 @@ namespace TMPro.Examples
         {
             m_TextComponent = GetComponent<TMP_Text>();
         }
+            
 
-
-        void Start()
+        void Update()
         {
+            if(Input.GetKey(KeyCode.UpArrow))
+            {
+                StartCoroutine(AnimateVertexColors());
 
-            StartCoroutine(AnimateVertexColors());
+            }
         }
 
 
@@ -62,9 +65,14 @@ namespace TMPro.Examples
                 if (textInfo.characterInfo[currentCharacter].isVisible)
                 {
 
-                    if(m_TextComponent.text[currentCharacter] == 'l')
+                    if(m_TextComponent.text[currentCharacter] == 'M')
                     {
-                        c0 = new Color32(255,0,0, 255);
+                        c0 = new Color32(220,220,220, 255);
+
+                    }
+                    else if (m_TextComponent.text[currentCharacter] == 'F')
+                    {
+                        c0 = new Color32(0, 255, 0, 255);
 
                     }
                     else

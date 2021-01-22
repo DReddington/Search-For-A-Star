@@ -4,16 +4,19 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private StoryData _data;
+    [SerializeField] private int worldSize = 10;
+    [SerializeField] private int numberOfTowns = 6;
 
     public char[,] _worldMap;
+    public Vector2Int characterPostion = new Vector2Int(1,1);
     private TextDisplay _output;
     private BeatData _currentBeat;
     private WaitForSeconds _wait;
 
     private void Awake()
     {
-        CreateWorld(25);
-         _output = GetComponentInChildren<TextDisplay>();
+        CreateWorld(worldSize);
+        _output = GetComponentInChildren<TextDisplay>();
         _currentBeat = null;
         _wait = new WaitForSeconds(0.5f);
     }
@@ -61,6 +64,41 @@ public class GameManager : MonoBehaviour
                     if (Input.GetKeyDown(alpha) || Input.GetKeyDown(keypad))
                     {
                         ChoiceData choice = _currentBeat.Decision[count];
+                        if(_currentBeat.ID == 4)//Map Display CHoice 
+                        {
+                            if(choice.DisplayText == "North")
+                            {
+                                characterPostion.y -= 1;
+                                if (characterPostion.y < 0) //Boundrie Cheacking
+                                    characterPostion.y++;
+                            }
+                            if (choice.DisplayText == "East")
+                            {
+                                characterPostion.x ++;
+                                if (characterPostion.x == worldSize)
+                                    characterPostion.x--;
+                            }
+                            if (choice.DisplayText == "South")
+                            {
+                                characterPostion.y += 1;
+                                if (characterPostion.y == worldSize)
+                                    characterPostion.y--; ;
+                            }
+                            if (choice.DisplayText == "West")
+                            {
+                                characterPostion.x --;
+                                if (characterPostion.x < 0)
+                                    characterPostion.x++; ;
+                            }
+                            if(choice.DisplayText == "Interact")
+                            {
+                                //Enter Town Dialouge 
+                                if(_worldMap[characterPostion.x, characterPostion.y] == 'T')
+                                {
+                                    choice.NextID =100;
+                                }
+                            }
+                        }
                         DisplayBeat(choice.NextID);
                         break;
                     }
@@ -126,9 +164,26 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    _worldMap[i, j] = 'F';
+                    var terrainChoice = Random.Range(0, 3);
+                    _worldMap[i, j] = 'P';
                 }
             }
         }
+        //Set Towns
+        var placedTowns = 0;
+
+        while(placedTowns<numberOfTowns)
+        {
+            Vector2Int temp = new Vector2Int(Random.Range(0, worldSize), Random.Range(0, worldSize));
+            if(_worldMap[temp.x,temp.y] != 'T')
+            {
+                _worldMap[temp.x, temp.y] = 'T';
+            }
+            placedTowns++;
+        }
+        
+
+
+
     }
 }

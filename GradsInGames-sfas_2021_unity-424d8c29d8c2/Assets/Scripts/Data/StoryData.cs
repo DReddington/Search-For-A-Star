@@ -16,9 +16,10 @@ public class StoryData : ScriptableObject
         return _beats.Find(b => b.ID == id);
     }
 
+
 #if UNITY_EDITOR
     public const string PathToAsset = "Assets/Data/Story.asset";
-
+    public const string PathToTownAsset = "Assets/Data/Town 1.asset";
     public static StoryData LoadData()
     {
         StoryData data = AssetDatabase.LoadAssetAtPath<StoryData>(PathToAsset);
