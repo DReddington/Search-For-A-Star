@@ -7,6 +7,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int worldSize = 10;
     [SerializeField] private int numberOfTowns = 6;
     [SerializeField] private Vector3Int[] townData; // x,y for location z for townID
+    [SerializeField] private Vector2Int[] bearLocations;
+    [SerializeField] private int numberOfBears =3;
+
+
 
     public char[,] _worldMap;
     public Vector2Int characterPostion = new Vector2Int(1,1);
@@ -112,11 +116,12 @@ public class GameManager : MonoBehaviour
                     if (Input.GetKeyDown(alpha) || Input.GetKeyDown(keypad))
                     {
                         ChoiceData choice = _currentBeat.Decision[count];
-                        if(_currentBeat.ID == 4)//Map Display CHoice 
+              
+                        if (_currentBeat.ID == 4)//Map Display CHoice 
                         {
                             MapInput(choice);
                         }
-                        if(choice.NextID == 4 && _currentBeat.ID ==4)
+                        if (choice.NextID == 4 && _currentBeat.ID == 4)
                         {
                             UpdateMap();
                         }
@@ -158,7 +163,7 @@ public class GameManager : MonoBehaviour
 
         if (data.Decision.Count > 0)
         {
-            _output.ShowWaitingForInput();
+            _output.ShowWaitingForMapInput();
         }
 
     }
@@ -214,6 +219,9 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
+
+        
         //Set Towns
         var placedTowns = 0;
         townData = new Vector3Int[numberOfTowns];
@@ -227,8 +235,20 @@ public class GameManager : MonoBehaviour
             }
             placedTowns++;
         }
-        
 
+
+        //Place Bears
+        var bearPlacments = 0;
+        bearLocations = new Vector2Int[numberOfBears];
+        while (bearPlacments < numberOfBears)
+        {
+            Vector2Int temp = new Vector2Int(Random.Range(0, worldSize), Random.Range(0, worldSize));
+            if (_worldMap[temp.x, temp.y] != 'T' || (temp.x != characterPostion.x && temp.x != characterPostion.y))
+            {
+                bearLocations[bearPlacments] = new Vector2Int(temp.x, temp.y);
+            }
+            bearPlacments++;
+        }
 
 
     }

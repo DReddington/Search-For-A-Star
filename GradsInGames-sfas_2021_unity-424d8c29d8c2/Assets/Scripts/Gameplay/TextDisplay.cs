@@ -146,7 +146,6 @@ public class TextDisplay : MonoBehaviour
             else if (gameManager._worldMap[gameManager.characterPostion.x, gameManager.characterPostion.y] == 'F')
             {
                 tempString += "field";
-
             }
 
             while (currentLetter < tempString.Length)
@@ -177,7 +176,7 @@ public class TextDisplay : MonoBehaviour
 
         while (enabled)
         {
-            //_displayText.text = string.Format("{0}> {1}", _displayString, (on ? "|" : " "));
+            _displayText.text = string.Format("{0}> {1}", _displayString, (on ? "|" : " "));
             on = !on;
             SetMapColours();
             yield return _longWait;
@@ -243,6 +242,12 @@ public class TextDisplay : MonoBehaviour
 
         _displayString = _displayText.text;
         SetMapColours();
+
+
+
+
+
+
         _state = State.Idle;
         yield return null;
     }

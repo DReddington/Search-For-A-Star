@@ -41,10 +41,10 @@ MonoBehaviour:
       _beatId: 4
     - _text: South
       _beatId: 4
-    - _text: 'West '
+    - _text: West
       _beatId: 4
     - _text: Interact
-      _beatId: 100
+      _beatId: 300
     _text: '$Use numbers to move around the map '
     _id: 4
   - _choices:
@@ -81,4 +81,9 @@ MonoBehaviour:
     - _text: 'You leave the town '
       _beatId: 4
     _text: Welcome to the town 7
+    _id: 700
+  - _choices:
+    - _text: 'You leave the town '
+      _beatId: 4
+    _text: You have been mauled by a bear
     _id: 700
