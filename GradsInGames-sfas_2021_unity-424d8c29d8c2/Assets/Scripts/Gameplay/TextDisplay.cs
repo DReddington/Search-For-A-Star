@@ -64,7 +64,11 @@ public class TextDisplay : MonoBehaviour
                 }
                 else if (_displayText.text[currentCharacter] == '0')
                 {
-                    c0 = new Color32(255, 0, 0, 255);
+                    c0 = new Color32(255, 215, 0, 255);
+                }
+                else if (_displayText.text[currentCharacter] == 'T')
+                {
+                    c0 = new Color32(139, 69, 19, 255);
                 }
                 else
                 {
@@ -167,6 +171,18 @@ public class TextDisplay : MonoBehaviour
         _state = State.Idle;
     }
 
+    private IEnumerator DoAwaitingMapInput()
+    {
+        bool on = true;
+
+        while (enabled)
+        {
+            //_displayText.text = string.Format("{0}> {1}", _displayString, (on ? "|" : " "));
+            on = !on;
+            SetMapColours();
+            yield return _longWait;
+        }
+    }
     private IEnumerator DoAwaitingInput()
     {
         bool on = true;
@@ -207,31 +223,28 @@ public class TextDisplay : MonoBehaviour
         _state = State.Idle;
     }
 
-    private IEnumerator DoClearMap()
+    private IEnumerator DoUpdateMap()
     {
-        int currentLetter = 0;
+        //int currentLetter = 0;
         char[] charArray = _displayText.text.ToCharArray();
+        //Update the postion of where the charater was to display previous terrain
+        //Update the character Postion
+        //Update the current tile the player is on 
 
-        while (currentLetter < charArray.Length) //Needs to be Length of Map 
-        {
-            if (currentLetter > 0 && charArray[currentLetter - 1] != '\n')
-            {
-                charArray[currentLetter - 1] = ' ';
-            }
+        charArray[gameManager.previousCharacterPostion.x + gameManager.previousCharacterPostion.y + (gameManager.previousCharacterPostion.y * 10)] =
+            gameManager._worldMap[gameManager.previousCharacterPostion.x, gameManager.previousCharacterPostion.y];
+        _displayText.text = charArray.ArrayToString();
 
-            if (charArray[currentLetter] != '\n')
-            {
-                charArray[currentLetter] = '_';
-            }
+        SetMapColours();
 
-            _displayText.text = charArray.ArrayToString();
-            ++currentLetter;
-            yield return null;
-        }
+        charArray[gameManager.characterPostion.x + gameManager.characterPostion.y + (gameManager.characterPostion.y * 10)] =
+            '0';
+        _displayText.text = charArray.ArrayToString();
 
-        _displayString = string.Empty;
-        _displayText.text = _displayString;
+        _displayString = _displayText.text;
+        SetMapColours();
         _state = State.Idle;
+        yield return null;
     }
 
 
@@ -245,6 +258,15 @@ public class TextDisplay : MonoBehaviour
         }
     }
 
+    public void ShowWaitingForMapInput()
+    {
+        if (_state == State.Idle)
+        {
+            StopAllCoroutines();
+            StartCoroutine(DoAwaitingMapInput());
+        }
+    }
+
     public void ShowWaitingForInput()
     {
         if (_state == State.Idle)
@@ -254,6 +276,15 @@ public class TextDisplay : MonoBehaviour
         }
     }
 
+    public void UpdateMap()
+    {
+        if (_state == State.Idle)
+        {
+            StopAllCoroutines();
+            _state = State.Busy;
+            StartCoroutine(DoUpdateMap());
+        }
+    }
     public void Clear()
     {
         if (_state == State.Idle)

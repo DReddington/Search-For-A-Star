@@ -43,21 +43,42 @@ MonoBehaviour:
       _beatId: 4
     - _text: 'West '
       _beatId: 4
-    - _text: 'Interact '
-      _beatId: 4
+    - _text: Interact
+      _beatId: 100
     _text: '$Use numbers to move around the map '
     _id: 4
   - _choices:
-    - _text: 'Start your quest for the wifi '
+    - _text: 'You leave the town '
       _beatId: 4
-    - _text: 'Return to main menu '
-      _beatId: 1
-    _text: New Story Beat
-    _id: 5
+    _text: Welcome to the town 1
+    _id: 100
   - _choices:
-    - _text: 'Start your quest for the wifi '
+    - _text: 'You leave the town '
       _beatId: 4
-    - _text: 'Return to main menu '
-      _beatId: 1
-    _text: New Story Beat
-    _id: 6
+    _text: Welcome to the town 2
+    _id: 200
+  - _choices:
+    - _text: 'You leave the town '
+      _beatId: 4
+    _text: Welcome to the town 3
+    _id: 300
+  - _choices:
+    - _text: 'You leave the town '
+      _beatId: 4
+    _text: Welcome to the town 4
+    _id: 400
+  - _choices:
+    - _text: 'You leave the town '
+      _beatId: 4
+    _text: Welcome to the town 5
+    _id: 500
+  - _choices:
+    - _text: 'You leave the town '
+      _beatId: 4
+    _text: Welcome to the town 6
+    _id: 600
+  - _choices:
+    - _text: 'You leave the town '
+      _beatId: 4
+    _text: Welcome to the town 7
+    _id: 700

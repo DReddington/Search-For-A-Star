@@ -6,9 +6,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private StoryData _data;
     [SerializeField] private int worldSize = 10;
     [SerializeField] private int numberOfTowns = 6;
+    [SerializeField] private Vector3Int[] townData; // x,y for location z for townID
 
     public char[,] _worldMap;
     public Vector2Int characterPostion = new Vector2Int(1,1);
+    public Vector2Int previousCharacterPostion;
     private TextDisplay _output;
     private BeatData _currentBeat;
     private WaitForSeconds _wait;
@@ -16,6 +18,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         CreateWorld(worldSize);
+        characterPostion = new Vector2Int(Random.Range(0, worldSize), Random.Range(0, worldSize));
         _output = GetComponentInChildren<TextDisplay>();
         _currentBeat = null;
         _wait = new WaitForSeconds(0.5f);
@@ -32,6 +35,51 @@ public class GameManager : MonoBehaviour
             else
             {
                 UpdateInput();
+            }
+        }
+    }
+
+    private void MapInput(ChoiceData choice)
+    {
+        previousCharacterPostion = characterPostion;
+        if (choice.DisplayText == "North")
+        {
+            characterPostion.y -= 1;
+            if (characterPostion.y < 0) //Boundrie Cheacking
+                characterPostion.y++;
+        }
+        if (choice.DisplayText == "East")
+        {
+            characterPostion.x++;
+            if (characterPostion.x == worldSize)
+                characterPostion.x--;
+        }
+        if (choice.DisplayText == "South")
+        {
+            characterPostion.y += 1;
+            if (characterPostion.y == worldSize)
+                characterPostion.y--; ;
+        }
+        if (choice.DisplayText == "West")
+        {
+            characterPostion.x--;
+            if (characterPostion.x < 0)
+                characterPostion.x++; ;
+        }
+        if (choice.DisplayText == "Interact")
+        {
+            //Enter Town Dialouge 
+            if (_worldMap[characterPostion.x, characterPostion.y] == 'T')
+            {
+                foreach(Vector3Int town in townData)
+                {
+                    if (characterPostion.x == town.x && characterPostion.y == town.y)
+                    {
+                        choice.NextID = town.z * 100;
+                        break;
+                    }
+                }
+             
             }
         }
     }
@@ -66,40 +114,16 @@ public class GameManager : MonoBehaviour
                         ChoiceData choice = _currentBeat.Decision[count];
                         if(_currentBeat.ID == 4)//Map Display CHoice 
                         {
-                            if(choice.DisplayText == "North")
-                            {
-                                characterPostion.y -= 1;
-                                if (characterPostion.y < 0) //Boundrie Cheacking
-                                    characterPostion.y++;
-                            }
-                            if (choice.DisplayText == "East")
-                            {
-                                characterPostion.x ++;
-                                if (characterPostion.x == worldSize)
-                                    characterPostion.x--;
-                            }
-                            if (choice.DisplayText == "South")
-                            {
-                                characterPostion.y += 1;
-                                if (characterPostion.y == worldSize)
-                                    characterPostion.y--; ;
-                            }
-                            if (choice.DisplayText == "West")
-                            {
-                                characterPostion.x --;
-                                if (characterPostion.x < 0)
-                                    characterPostion.x++; ;
-                            }
-                            if(choice.DisplayText == "Interact")
-                            {
-                                //Enter Town Dialouge 
-                                if(_worldMap[characterPostion.x, characterPostion.y] == 'T')
-                                {
-                                    choice.NextID =100;
-                                }
-                            }
+                            MapInput(choice);
                         }
-                        DisplayBeat(choice.NextID);
+                        if(choice.NextID == 4 && _currentBeat.ID ==4)
+                        {
+                            UpdateMap();
+                        }
+                        else
+                        {
+                            DisplayBeat(choice.NextID);
+                        }
                         break;
                     }
                 }
@@ -110,6 +134,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void UpdateMap()
+    {
+        BeatData data = _data.GetBeatById(4); //Map ID
+        StartCoroutine(UpdateMapDisplay(data));
+        _currentBeat = data;
+    }
+
     private void DisplayBeat(int id)
     {
         BeatData data = _data.GetBeatById(id);
@@ -117,6 +148,20 @@ public class GameManager : MonoBehaviour
         _currentBeat = data;
     }
 
+    private IEnumerator UpdateMapDisplay(BeatData data)
+    {
+        _output.UpdateMap();
+        while (_output.IsBusy)
+        {
+            yield return null;
+        }
+
+        if (data.Decision.Count > 0)
+        {
+            _output.ShowWaitingForInput();
+        }
+
+    }
     private IEnumerator DoDisplay(BeatData data)
     {
         _output.Clear();
@@ -171,13 +216,14 @@ public class GameManager : MonoBehaviour
         }
         //Set Towns
         var placedTowns = 0;
-
+        townData = new Vector3Int[numberOfTowns];
         while(placedTowns<numberOfTowns)
         {
             Vector2Int temp = new Vector2Int(Random.Range(0, worldSize), Random.Range(0, worldSize));
             if(_worldMap[temp.x,temp.y] != 'T')
             {
                 _worldMap[temp.x, temp.y] = 'T';
+                townData[placedTowns] = new Vector3Int(temp.x, temp.y, placedTowns + 1);
             }
             placedTowns++;
         }
