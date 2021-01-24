@@ -68,6 +68,10 @@ public class TextDisplay : MonoBehaviour
                 }
                 else if (_displayText.text[currentCharacter] == 'T')
                 {
+                    c0 = new Color32(153, 50, 204, 255);
+                }
+                else if (_displayText.text[currentCharacter] == 'B')
+                {
                     c0 = new Color32(139, 69, 19, 255);
                 }
                 else
@@ -230,7 +234,7 @@ public class TextDisplay : MonoBehaviour
         //Update the character Postion
         //Update the current tile the player is on 
 
-        charArray[gameManager.previousCharacterPostion.x + gameManager.previousCharacterPostion.y + (gameManager.previousCharacterPostion.y * 10)] =
+          charArray[gameManager.previousCharacterPostion.x + gameManager.previousCharacterPostion.y + (gameManager.previousCharacterPostion.y * 10)] =
             gameManager._worldMap[gameManager.previousCharacterPostion.x, gameManager.previousCharacterPostion.y];
         _displayText.text = charArray.ArrayToString();
 
@@ -243,7 +247,21 @@ public class TextDisplay : MonoBehaviour
         _displayString = _displayText.text;
         SetMapColours();
 
+        //Update Bear Locations
+        foreach(Bear b in gameManager.bears)
+        {
+            charArray[b.previousLocation.x + b.previousLocation.y + (b.previousLocation.y * 10)] = gameManager._worldMap[b.previousLocation.x, b.previousLocation.y];
+            _displayText.text = charArray.ArrayToString();
 
+            SetMapColours();
+
+            charArray[b.bearLocation.x + b.bearLocation.y + (b.bearLocation.y * 10)] =
+                'B';
+            _displayText.text = charArray.ArrayToString();
+
+            _displayString = _displayText.text;
+            SetMapColours();
+        }
 
 
 

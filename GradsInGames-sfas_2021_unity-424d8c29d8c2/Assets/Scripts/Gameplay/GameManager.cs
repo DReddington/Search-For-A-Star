@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+//This should be a static class, fix later
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private StoryData _data;
-    [SerializeField] private int worldSize = 10;
+    [SerializeField] public int worldSize = 10;
     [SerializeField] private int numberOfTowns = 6;
     [SerializeField] private Vector3Int[] townData; // x,y for location z for townID
-    [SerializeField] private Vector2Int[] bearLocations;
     [SerializeField] private int numberOfBears =3;
-
-
+    [SerializeField] public Bear[] bears;
 
     public char[,] _worldMap;
     public Vector2Int characterPostion = new Vector2Int(1,1);
@@ -21,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        bears = new Bear[numberOfBears];
         CreateWorld(worldSize);
         characterPostion = new Vector2Int(Random.Range(0, worldSize), Random.Range(0, worldSize));
         _output = GetComponentInChildren<TextDisplay>();
@@ -83,7 +83,6 @@ public class GameManager : MonoBehaviour
                         break;
                     }
                 }
-             
             }
         }
     }
@@ -120,7 +119,19 @@ public class GameManager : MonoBehaviour
                         if (_currentBeat.ID == 4)//Map Display CHoice 
                         {
                             MapInput(choice);
+                            foreach(Bear b in bears)
+                            {
+                                b.BearUpdate(this);
+                                if(b.bearLocation == characterPostion)
+                                {
+                                    choice.NextID = 5;
+                                    CreateWorld(worldSize);
+                                    break;
+                                }
+                            }
                         }
+
+
                         if (choice.NextID == 4 && _currentBeat.ID == 4)
                         {
                             UpdateMap();
@@ -128,6 +139,7 @@ public class GameManager : MonoBehaviour
                         else
                         {
                             DisplayBeat(choice.NextID);
+
                         }
                         break;
                     }
@@ -238,16 +250,16 @@ public class GameManager : MonoBehaviour
 
 
         //Place Bears
-        var bearPlacments = 0;
-        bearLocations = new Vector2Int[numberOfBears];
+        var bearPlacments = 0;  
         while (bearPlacments < numberOfBears)
         {
             Vector2Int temp = new Vector2Int(Random.Range(0, worldSize), Random.Range(0, worldSize));
             if (_worldMap[temp.x, temp.y] != 'T' || (temp.x != characterPostion.x && temp.x != characterPostion.y))
             {
-                bearLocations[bearPlacments] = new Vector2Int(temp.x, temp.y);
+                bears[bearPlacments] = new Bear(temp);
+                bearPlacments++;
+
             }
-            bearPlacments++;
         }
 
 

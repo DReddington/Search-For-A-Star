@@ -18,6 +18,8 @@ MonoBehaviour:
       _beatId: 3
     - _text: Press 2 for Game Instructions
       _beatId: 2
+    - _text: Wifi Code sumbission
+      _beatId: 2
     _text: 'Welcome to Generic Adventure Game : The Broken World'
     _id: 1
   - _choices: []
@@ -36,15 +38,15 @@ MonoBehaviour:
     _id: 3
   - _choices:
     - _text: North
-      _beatId: 4
+      _beatId: 5
     - _text: East
       _beatId: 4
     - _text: South
-      _beatId: 4
+      _beatId: 5
     - _text: West
       _beatId: 4
     - _text: Interact
-      _beatId: 300
+      _beatId: 100
     _text: '$Use numbers to move around the map '
     _id: 4
   - _choices:
@@ -83,7 +85,7 @@ MonoBehaviour:
     _text: Welcome to the town 7
     _id: 700
   - _choices:
-    - _text: 'You leave the town '
-      _beatId: 4
+    - _text: 'Return to Main Menu '
+      _beatId: 1
     _text: You have been mauled by a bear
-    _id: 700
+    _id: 5
